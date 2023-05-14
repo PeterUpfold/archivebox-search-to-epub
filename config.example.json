@@ -1,0 +1,9 @@
+{
+    "archivebox_root": "/some/folder/ArchiveBox",
+    "output_dir": "/some/output/folder",
+    "invoke_node_cmdline": "node",
+    "embed_images_tool": "/some/tools/folder/embed-images-as-data-uris/embed-images-as-data-uris.js",
+    "ebook_convert_cmdline": "ebook-convert",
+    "max_image_size": "700x500",
+    "output_profile": "sony300"
+}
