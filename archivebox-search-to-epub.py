@@ -13,7 +13,7 @@ import re
 import os
 from datetime import datetime
 
-with open('volatile/config.json', 'r') as json_file:
+with open(os.path.join(os.path.dirname(__file__), 'volatile/config.json'), 'r') as json_file:
     config = json.load(json_file)
 
 # must provide the search query as the first argument
@@ -62,6 +62,7 @@ for directory in directory_results:
     abs_directory = os.path.join(config['archivebox_root'], directory)
 
     filename_sanitised_search = sys.argv[1].replace(' ', '-')
+    filename_sanitised_search = filename_sanitised_search.replace(':', '-')
     filename_sanitised_search = ''.join([c for c in filename_sanitised_search if re.match(r'[\w\S]', c)])
 
     # define the output epub file name
