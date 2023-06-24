@@ -5,5 +5,18 @@
     "embed_images_tool": "/some/tools/folder/embed-images-as-data-uris/embed-images-as-data-uris.js",
     "ebook_convert_cmdline": "ebook-convert",
     "max_image_size": "700x500",
-    "output_profile": "sony300"
+    "output_profile": "sony300",
+    "archivebox_add_args":
+        [
+            "podman",
+            "run",
+            "--rm",
+            "-i",
+            "--user",
+            "USERID",
+            "--volume",
+            "/some/volume/data:/data",
+            "localhost/archivebox-on-podman",
+            "add"
+        ]
 }
