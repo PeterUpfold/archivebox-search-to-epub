@@ -63,7 +63,7 @@ for directory in directory_results:
 
     filename_sanitised_search = sys.argv[1].replace(' ', '-')
     filename_sanitised_search = filename_sanitised_search.replace(':', '-')
-    filename_sanitised_search = ''.join([c for c in filename_sanitised_search if re.match(r'[\w\S]', c)])
+    filename_sanitised_search = re.sub(r'[^a-zA-Z0-9-]', '-', filename_sanitised_search)
 
     # define the output epub file name
     today = datetime.strftime(datetime.now(), '%Y-%m-%d')
