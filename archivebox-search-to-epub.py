@@ -43,7 +43,7 @@ with sqlite3.connect(os.path.join(config['archivebox_root'], 'data', 'index.sqli
     cursor = conn.cursor()
     results = cursor.execute(
         """
-            SELECT pwd FROM core_snapshot INNER JOIN core_archiveresult ON core_archiveresult.snapshot_id = core_snapshot.id WHERE core_snapshot.title LIKE ? ORDER BY timestamp ASC
+            SELECT DISTINCT pwd FROM core_snapshot INNER JOIN core_archiveresult ON core_archiveresult.snapshot_id = core_snapshot.id WHERE core_snapshot.title LIKE ? ORDER BY timestamp ASC
         """, [ f'%{sys.argv[1]}%' ])
     for row in results:
         directory_results += row
