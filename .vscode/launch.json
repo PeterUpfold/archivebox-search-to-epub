@@ -9,7 +9,8 @@
             "type": "python",
             "request": "launch",
             "program": "${file}",
-            "args": [ "Building a baseline JIT for Lua automatically" ],
+            //"args": [ "Building a baseline JIT for Lua automatically" ],
+            "args": [ "-t" ],
             "console": "integratedTerminal",
             "justMyCode": true
         }
