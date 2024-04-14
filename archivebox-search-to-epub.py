@@ -97,8 +97,6 @@ for item in results:
     local_dir = local_dir.replace(config['localpath_replace'], '')
     
     abs_directory = os.path.join(os.path.join(config['archivebox_root'], 'data'), local_dir)
-    print(local_dir)
-    print(abs_directory)
 
     filename_sanitised_search = item['title'].replace(' ', '-')
     filename_sanitised_search = filename_sanitised_search.replace(':', '-')
