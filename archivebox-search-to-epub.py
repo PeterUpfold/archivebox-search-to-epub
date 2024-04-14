@@ -91,7 +91,14 @@ for item in results:
     # strip initial slash to make sure we get an absolute dir when we `os.path.join`
     if item['pwd'][0] == '/':
         item['pwd'] = item['pwd'][1:]
-    abs_directory = os.path.join(config['archivebox_root'], item['pwd'])
+    
+    # strip any localpath_replace part
+    local_dir = item['pwd']
+    local_dir = local_dir.replace(config['localpath_replace'], '')
+    
+    abs_directory = os.path.join(os.path.join(config['archivebox_root'], 'data'), local_dir)
+    print(local_dir)
+    print(abs_directory)
 
     filename_sanitised_search = item['title'].replace(' ', '-')
     filename_sanitised_search = filename_sanitised_search.replace(':', '-')

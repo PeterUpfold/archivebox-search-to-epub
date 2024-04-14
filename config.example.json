@@ -1,5 +1,6 @@
 {
-    "archivebox_root": "/some/folder/ArchiveBox",
+    "archivebox_root": "/some/folder/ArchiveBox/data/archive",
+    "localpath_replace": "archive/",
     "output_dir": "/some/output/folder",
     "invoke_node_cmdline": "node",
     "embed_images_tool": "/some/tools/folder/embed-images-as-data-uris/embed-images-as-data-uris.js",
