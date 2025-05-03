@@ -17,6 +17,7 @@ from shutil import copyfile
 from subprocess import CalledProcessError
 import logging
 import tempfile
+import argparse
 
 def query_database(config, query, args = None):
     """Query the SQLite database
@@ -33,6 +34,13 @@ def query_database(config, query, args = None):
 
 logname = os.path.join(tempfile.gettempdir(), os.path.basename(__file__) + '.log')
 logging.basicConfig(level=logging.ERROR, filename=logname)
+
+# parse command line arguments
+argparser = argparse.ArgumentParser(description='Uses `ebook-convert` to convert Readability version of an ArchiveBox item for consuming articles offline in ePub format.')
+argparser.add_argument('-t', '--today', dest='today', help='If set, export articles imported today', required=False, action='store_true')
+argparser.add_argument('-d', '--days-ago', dest='days_ago', help='If set, export articles from n days ago', required=False, type=int)
+argparser.add_argument('article_title', help='If set, a single article to export', nargs='?')
+args = argparser.parse_args()
 
 with open(os.path.join(os.path.dirname(__file__), 'volatile/config.json'), 'r') as json_file:
     config = json.load(json_file)
@@ -59,18 +67,27 @@ for required_key in required_config_keys:
 
 results = []
 
-article_title = sys.argv[1]
+if 'article_title' in args and args.article_title is not None and len(args.article_title) > 0:
+    article_title = args.article_title
+else:
+    article_title = ''
 
 # open the database and search
-if sys.argv[1] != '-t':
+if article_title is not None and len(article_title) > 0:
     logging.info(f'Will query for article title {article_title}')
-    results = query_database(config, """
+    results += query_database(config, """
                 SELECT DISTINCT pwd, title FROM core_snapshot INNER JOIN core_archiveresult ON core_archiveresult.snapshot_id = core_snapshot.id WHERE core_snapshot.title LIKE ? ORDER BY timestamp ASC
             """, [ f'%{article_title}%' ])
 
-else: # today's results
+if args.days_ago:
+    logging.info(f'Will query for articles -{args.days_ago} days')
+    results += query_database(config, """
+                SELECT DISTINCT pwd, title FROM core_snapshot INNER JOIN core_archiveresult ON core_archiveresult.snapshot_id = core_snapshot.id WHERE core_snapshot.added > DATE('now', ?) ORDER BY timestamp ASC
+            """, [ f'-{int(args.days_ago)} day' ])
+
+if args.today: # today's results
     logging.info(f'Will query for articles -1 day')
-    results = query_database(config, """
+    results += query_database(config, """
                 SELECT DISTINCT pwd, title FROM core_snapshot INNER JOIN core_archiveresult ON core_archiveresult.snapshot_id = core_snapshot.id WHERE core_snapshot.added > DATE('now','-1 day') ORDER BY timestamp ASC
             """)
 # no results
